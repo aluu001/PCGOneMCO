@@ -570,26 +570,28 @@ export default function NewRequest() {
 
             {/* TAB CONTENT 3: Database Selection (Nested Categories Menu) */}
             {activeTab === 'databases' && (
-              <div className="flex flex-col gap-6 animate-in fade-in duration-200">
+              <div className="flex flex-col gap-8 animate-in fade-in duration-200">
                 
                 {/* Global database control header */}
-                <div className="flex flex-wrap items-center justify-between gap-4 bg-zinc-50 border border-zinc-250 p-4.5 rounded-2xl shadow-inner">
+                <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-zinc-200">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-indigo-700 uppercase tracking-wider">Query Configuration</span>
-                    <span className="text-xs text-zinc-500 font-semibold mt-0.5">{countActiveDatabases()} Databases selected in total</span>
+                    <h4 className="text-xs font-black text-zinc-900 uppercase tracking-wider">Database Sources to Query</h4>
+                    <span className="text-xs text-zinc-500 font-semibold mt-0.5">{countActiveDatabases()} of 38 databases selected</span>
                   </div>
-                  <div className="flex gap-2">
-                    <button type="button" onClick={() => setAllCheckboxes(true)} className="border border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-700 font-bold px-3.5 py-2 rounded-xl text-[10px] uppercase tracking-wider">Select All Sources</button>
-                    <button type="button" onClick={() => setAllCheckboxes(false)} className="border border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-705 font-bold px-3.5 py-2 rounded-xl text-[10px] uppercase tracking-wider">Unselect All</button>
-                    <button type="button" onClick={() => setSources(initialCheckboxState)} className="border border-indigo-200 hover:border-indigo-350 bg-indigo-50/50 text-indigo-705 font-bold px-3.5 py-2 rounded-xl text-[10px] uppercase tracking-wider">Reset Defaults</button>
+                  <div className="flex gap-3 text-[10px] font-black uppercase tracking-wider text-zinc-400">
+                    <button type="button" onClick={() => setAllCheckboxes(true)} className="hover:text-indigo-650 transition-colors">Select All</button>
+                    <span>&bull;</span>
+                    <button type="button" onClick={() => setAllCheckboxes(false)} className="hover:text-indigo-650 transition-colors">Deselect All</button>
+                    <span>&bull;</span>
+                    <button type="button" onClick={() => setSources(initialCheckboxState)} className="hover:text-indigo-650 transition-colors">Reset Defaults</button>
                   </div>
                 </div>
 
                 {/* Nested Category-by-Category Layout */}
-                <div className="flex flex-col lg:flex-row gap-6 items-stretch w-full min-h-[400px]">
+                <div className="flex flex-col lg:flex-row gap-8 items-stretch w-full min-h-[400px]">
                   
                   {/* Nested Sub-Sidebar: Categories Menu */}
-                  <div className="w-full lg:w-64 shrink-0 flex flex-col gap-1.5 pr-4 lg:border-r border-zinc-200">
+                  <div className="w-full lg:w-60 shrink-0 flex flex-col gap-1 pr-4 lg:border-r border-zinc-200">
                     {Object.entries(categoryLabels).map(([key, label]) => {
                       const isActive = activeDbCategory === key;
                       const selectedCount = Object.values(sources[key] || {}).filter(Boolean).length;
@@ -599,14 +601,20 @@ export default function NewRequest() {
                           key={key}
                           type="button"
                           onClick={() => setActiveDbCategory(key)}
-                          className={`flex items-center justify-between px-3.5 py-3 rounded-xl text-left transition-all border ${
+                          className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all text-xs font-semibold ${
                             isActive 
-                              ? 'bg-zinc-100 border-zinc-300 text-zinc-950 font-bold shadow-sm' 
-                              : 'bg-transparent border-transparent text-zinc-650 hover:bg-zinc-50/80 font-semibold'
+                              ? 'bg-zinc-100 text-zinc-950 font-bold' 
+                              : 'bg-transparent text-zinc-505 hover:bg-zinc-50 hover:text-zinc-800'
                           }`}
                         >
-                          <span className="text-xs tracking-wide">{label}</span>
-                          <span className={`text-[9px] px-2 py-0.5 rounded font-black tracking-widest ${isActive ? 'bg-indigo-600 text-white shadow-sm' : 'bg-zinc-200 text-zinc-600'}`}>
+                          <span>{label}</span>
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded font-black tracking-widest ${
+                            isActive 
+                              ? 'bg-indigo-600 text-white' 
+                              : selectedCount > 0 
+                                ? 'bg-indigo-50 text-indigo-750' 
+                                : 'bg-zinc-100 text-zinc-450'
+                          }`}>
                             {selectedCount}
                           </span>
                         </button>
@@ -615,48 +623,51 @@ export default function NewRequest() {
                   </div>
 
                   {/* Nested Sub-Pane: Checklist of databases for active category */}
-                  <div className="flex-1 flex flex-col gap-5 pl-2 animate-in fade-in duration-150">
-                    <div>
+                  <div className="flex-1 flex flex-col gap-6 pl-2 animate-in fade-in duration-150">
+                    <div className="flex flex-col gap-1">
                       <h4 className="text-sm font-black text-zinc-900 uppercase tracking-tight">{categoryLabels[activeDbCategory]} Databases</h4>
-                      <p className="text-xs text-zinc-500 mt-1">{categoryDescriptions[activeDbCategory]}</p>
+                      <p className="text-xs text-zinc-500 leading-relaxed">{categoryDescriptions[activeDbCategory]}</p>
                     </div>
 
                     {/* Category-specific controls */}
-                    <div className="flex gap-2 border-b border-zinc-100 pb-3">
+                    <div className="flex gap-3 text-[10px] font-black uppercase tracking-wider text-zinc-400">
                       <button 
                         type="button" 
                         onClick={() => setCategoryAll(activeDbCategory, true)}
-                        className="text-[10px] font-black text-indigo-700 bg-indigo-50/50 hover:bg-indigo-50 border border-indigo-200 px-3.5 py-1.5 rounded-lg uppercase tracking-wider"
+                        className="hover:text-indigo-650 transition-colors"
                       >
                         Select All in {categoryLabels[activeDbCategory]}
                       </button>
+                      <span>&bull;</span>
                       <button 
                         type="button" 
                         onClick={() => setCategoryAll(activeDbCategory, false)}
-                        className="text-[10px] font-black text-zinc-700 bg-zinc-50 hover:bg-zinc-100 border border-zinc-300 px-3.5 py-1.5 rounded-lg uppercase tracking-wider"
+                        className="hover:text-indigo-650 transition-colors"
                       >
-                        Unselect All
+                        Clear Category
                       </button>
                     </div>
 
                     {/* Checkboxes Checklist Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 pt-2">
                       {Object.entries(sources[activeDbCategory] || {}).map(([sourceName, checked]) => (
                         <label 
                           key={sourceName} 
-                          className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl border transition-all cursor-pointer select-none ${
-                            checked 
-                              ? 'bg-indigo-50/30 border-indigo-250 text-indigo-905 shadow-sm font-bold' 
-                              : 'bg-white border-zinc-250 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300'
-                          }`}
+                          className="flex items-start gap-3 cursor-pointer select-none group"
                         >
                           <input 
                             type="checkbox" 
                             checked={checked}
                             onChange={() => toggleCheckbox(activeDbCategory, sourceName)}
-                            className="w-4 h-4 text-indigo-650 border-zinc-350 rounded focus:ring-indigo-500 bg-white cursor-pointer"
+                            className="w-4 h-4 mt-0.5 text-indigo-600 border-zinc-300 rounded focus:ring-indigo-550/20 bg-white cursor-pointer transition-all"
                           />
-                          <span className="text-xs leading-none">{sourceName}</span>
+                          <span className={`text-xs transition-colors ${
+                            checked 
+                              ? 'text-zinc-950 font-extrabold' 
+                              : 'text-zinc-650 font-medium group-hover:text-zinc-800'
+                          }`}>
+                            {sourceName}
+                          </span>
                         </label>
                       ))}
                     </div>
