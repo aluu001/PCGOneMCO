@@ -1,35 +1,16 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  AlertCircle, 
-  CheckCircle2, 
-  FileText, 
-  Download, 
-  User, 
-  Calendar, 
-  FileDigit, 
-  Briefcase, 
-  Building2, 
-  MapPin, 
-  Activity, 
-  FileWarning, 
-  ShieldAlert, 
-  ChevronRight,
-  Check,
-  AlertTriangle
-} from 'lucide-react';
 
 const mockAssistanceText = "MAGI Deemed Infant, Aged Categorically Needy, SSI Recipient - Aged, MBIWD Basic, LTC-SIL - Waiver Level One, MAGI Child Under 1, MAGI Child 1-5, MAGI Child 6-18, CHIP Child 1, CHIP Child 2, MAGI Pregnant Women, MAGI Parent or Caretaker, TMA (1st 6 Months), Extended Medical Assistance (EMA), Former Foster Care, Ribicoff Kid, MAGI Adult Age 19-20, HCBS, Institutional Setting, Disabled, Blind Categorically Needy, 1619(b) Recipient, RSS Medicaid - Non-SSI, Individual Receiving Mandatory State Supplements...";
 
 const categories = [
-  { id: 'criminal', label: 'Criminal History', icon: Building2, status: 'Likely Ineligible' },
-  { id: 'assets', label: 'Financial Assets', icon: Briefcase, status: 'Likely Ineligible' },
-  { id: 'age', label: 'Age', icon: Calendar, status: 'Eligible' },
-  { id: 'citizenship', label: 'Citizenship', icon: MapPin, status: 'Eligible' },
-  { id: 'household', label: 'Household', icon: User, status: 'Eligible' },
-  { id: 'identity', label: 'Identity', icon: FileWarning, status: 'Eligible' },
-  { id: 'income', label: 'Income & Employment', icon: Activity, status: 'Eligible' },
+  { id: 'criminal', label: 'Criminal History', status: 'Likely Ineligible' },
+  { id: 'assets', label: 'Financial Assets', status: 'Likely Ineligible' },
+  { id: 'age', label: 'Age', status: 'Eligible' },
+  { id: 'citizenship', label: 'Citizenship', status: 'Eligible' },
+  { id: 'household', label: 'Household', status: 'Eligible' },
+  { id: 'identity', label: 'Identity', status: 'Eligible' },
+  { id: 'income', label: 'Income & Employment', status: 'Eligible' },
 ];
 
 function StatusBadge({ status }: { status: string }) {
@@ -40,7 +21,6 @@ function StatusBadge({ status }: { status: string }) {
         ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
         : 'bg-red-50 text-red-700 border-red-200'
     }`}>
-      {isEligible ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5" />}
       {status}
     </span>
   );
@@ -59,14 +39,14 @@ export default function EligibilityReport() {
       {/* Top Breadcrumb & Actions Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-600 hover:text-indigo-600 transition-colors bg-white px-4 py-2 rounded-lg border border-zinc-200 shadow-sm hover:shadow-md w-fit">
-          <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+          Back to Dashboard
         </Link>
         <div className="flex items-center gap-3">
-          <button className="bg-white border border-zinc-200 hover:border-indigo-300 hover:bg-indigo-50 text-indigo-700 font-bold rounded-lg shadow-sm transition-all px-4 py-2.5 text-xs flex items-center gap-1.5 uppercase tracking-wider">
-            <FileText className="w-4 h-4" /> Generate Letter
+          <button className="bg-white border border-zinc-200 hover:border-indigo-300 hover:bg-indigo-50 text-indigo-700 font-bold rounded-lg shadow-sm transition-all px-4 py-2.5 text-xs uppercase tracking-wider">
+            Generate Letter
           </button>
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-sm transition-all px-4 py-2.5 text-xs flex items-center gap-1.5 uppercase tracking-wider">
-            <Download className="w-4 h-4" /> Export Summary
+          <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-sm transition-all px-4 py-2.5 text-xs uppercase tracking-wider">
+            Export Summary
           </button>
         </div>
       </div>
@@ -78,8 +58,7 @@ export default function EligibilityReport() {
         {/* Left Status Area */}
         <div className="p-6 md:p-8 md:w-[35%] border-b md:border-b-0 md:border-r border-zinc-200 bg-red-50/10 flex flex-col justify-center">
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-red-600 mb-2 bg-red-50 px-2.5 py-1 rounded w-fit">Final Determination</span>
-          <div className="flex items-center gap-3.5 mb-6">
-            <ShieldAlert className="w-10 h-10 text-red-600 shrink-0" />
+          <div className="flex flex-col gap-1 mb-6">
             <h2 className="text-3xl font-black text-red-700 tracking-tight leading-none">Likely Ineligible</h2>
           </div>
           
@@ -113,7 +92,7 @@ export default function EligibilityReport() {
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Client Name</span>
-            <span className="text-base font-bold text-zinc-800 flex items-center gap-1.5"><User className="w-4.5 h-4.5 text-indigo-500"/> John M Doe</span>
+            <span className="text-base font-bold text-zinc-800">John M Doe</span>
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Adults</span>
@@ -155,24 +134,22 @@ export default function EligibilityReport() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveTab(cat.id)}
-                  className={`flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-150 border text-left group w-full ${
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 border text-left group w-full ${
                     isActive 
-                      ? 'bg-indigo-600 border-indigo-600 text-white shadow-[0_4px_12px_rgba(79,70,229,0.25)]' 
-                      : 'bg-white border-zinc-100 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-200'
+                      ? 'bg-indigo-600 border-indigo-600 text-white shadow-[0_4px_12px_rgba(79,70,229,0.25)] font-bold' 
+                      : 'bg-white border-zinc-100 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-200 font-semibold'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <cat.icon className={`w-4.5 h-4.5 shrink-0 ${isActive ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-600'}`} />
-                    <span className="text-xs font-bold tracking-wide">
-                      {cat.label}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className={`w-2 h-2 rounded-full shrink-0 ${
-                      isEligible ? 'bg-emerald-500' : 'bg-red-500 animate-pulse'
-                    }`} />
-                    {isActive && <ChevronRight className="w-3.5 h-3.5 text-white/80" />}
-                  </div>
+                  <span className="text-xs tracking-wide">
+                    {cat.label}
+                  </span>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider shrink-0 ${
+                    isActive
+                      ? (isEligible ? 'bg-indigo-500/30 text-white border border-white/20' : 'bg-red-500/30 text-white border border-white/20')
+                      : (isEligible ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-red-50 text-red-700 border border-red-100')
+                  }`}>
+                    {isEligible ? 'Eligible' : 'Ineligible'}
+                  </span>
                 </button>
               )
             })}
@@ -184,16 +161,9 @@ export default function EligibilityReport() {
           
           {/* Detail Pane Header */}
           <div className="flex items-center justify-between border-b border-zinc-100 pb-5 mb-6">
-            <div className="flex items-center gap-3.5">
-              <div className={`p-2.5 rounded-xl ${
-                activeCategory?.status === 'Eligible' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'
-              }`}>
-                {activeCategory && <activeCategory.icon className="w-6 h-6" />}
-              </div>
-              <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600">Category details</span>
-                <h3 className="text-xl font-extrabold text-zinc-900 tracking-tight">{activeCategory?.label}</h3>
-              </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600">Category details</span>
+              <h3 className="text-xl font-extrabold text-zinc-900 tracking-tight">{activeCategory?.label}</h3>
             </div>
             {activeCategory && <StatusBadge status={activeCategory.status} />}
           </div>
@@ -202,20 +172,17 @@ export default function EligibilityReport() {
           {activeTab === 'criminal' && (
             <div className="flex flex-col gap-6 animate-in fade-in duration-200">
               {/* Main Issue Alert Banner */}
-              <div className="flex items-start gap-3 p-4 bg-red-50/50 border border-red-100 rounded-xl text-red-800">
-                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-red-600" />
-                <div>
-                  <h4 className="font-bold text-sm">Discrepancy Found: Active Incarceration Record</h4>
-                  <p className="text-xs text-red-700 mt-1 leading-relaxed">
-                    Verification sources report the client is currently incarcerated. Instate residency and household composition details must be reviewed for program eligibility.
-                  </p>
-                </div>
+              <div className="p-4 bg-red-50/50 border border-red-100 rounded-xl text-red-800">
+                <h4 className="font-bold text-sm">Discrepancy Found: Active Incarceration Record</h4>
+                <p className="text-xs text-red-700 mt-1 leading-relaxed">
+                  Verification sources report the client is currently incarcerated. Instate residency and household composition details must be reviewed for program eligibility.
+                </p>
               </div>
 
               {/* Side-by-Side reported vs verified comparison */}
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3 flex items-center gap-1.5">
-                  <FileDigit className="w-4 h-4 text-indigo-500" /> Reported vs Verified Source Data
+                <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3">
+                  Reported vs Verified Source Data
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Reported */}
@@ -303,8 +270,7 @@ export default function EligibilityReport() {
 
               {/* Data Profile Verification Detail */}
               <div className="bg-indigo-50/20 border border-indigo-100 rounded-xl p-4.5">
-                <div className="flex items-center gap-2 mb-3">
-                  <User className="w-4 h-4 text-indigo-500" />
+                <div className="mb-3">
                   <span className="text-xs font-bold text-zinc-800">Verified Identity Reference</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
@@ -332,20 +298,17 @@ export default function EligibilityReport() {
           {activeTab === 'assets' && (
             <div className="flex flex-col gap-6 animate-in fade-in duration-200">
               {/* Asset Alert Banner */}
-              <div className="flex items-start gap-3 p-4 bg-red-50/50 border border-red-100 rounded-xl text-red-800">
-                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-red-600" />
-                <div>
-                  <h4 className="font-bold text-sm">Discrepancy Found: Asset Transfer Limit Exceeded</h4>
-                  <p className="text-xs text-red-700 mt-1 leading-relaxed">
-                    Acuity Asset Verification database reports a balance decrease exceeding $5,000.00 within a 60-day period. This may indicate unverified asset transfers, resource divestment, or bank accounts exceeding program asset limits.
-                  </p>
-                </div>
+              <div className="p-4 bg-red-50/50 border border-red-100 rounded-xl text-red-800">
+                <h4 className="font-bold text-sm">Discrepancy Found: Asset Transfer Limit Exceeded</h4>
+                <p className="text-xs text-red-700 mt-1 leading-relaxed">
+                  Acuity Asset Verification database reports a balance decrease exceeding $5,000.00 within a 60-day period. This may indicate unverified asset transfers, resource divestment, or bank accounts exceeding program asset limits.
+                </p>
               </div>
 
               {/* Side-by-Side Comparison */}
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3 flex items-center gap-1.5">
-                  <FileDigit className="w-4 h-4 text-indigo-500" /> Asset Value Verification
+                <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3">
+                  Asset Value Verification
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Reported */}
@@ -417,15 +380,10 @@ export default function EligibilityReport() {
           {!['criminal', 'assets'].includes(activeTab) && (
             <div className="flex flex-col gap-8 flex-1 justify-center items-center py-10 animate-in fade-in duration-200">
               
-              {/* Success Badge */}
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center border border-emerald-100 shadow-sm animate-bounce">
-                  <Check className="w-8 h-8 text-emerald-600" />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-lg font-bold text-zinc-900">Verification Successful</h3>
-                  <p className="text-xs text-zinc-500 font-semibold max-w-sm">No negative findings were reported for this category. All application records match database sources.</p>
-                </div>
+              {/* Success Banner */}
+              <div className="flex flex-col items-center text-center gap-2">
+                <h3 className="text-lg font-bold text-zinc-900">Verification Successful</h3>
+                <p className="text-xs text-zinc-500 font-semibold max-w-sm">No negative findings were reported for this category. All application records match database sources.</p>
               </div>
 
               {/* Side-by-Side Match Verification */}
@@ -444,7 +402,7 @@ export default function EligibilityReport() {
                         </div>
                         <div className="flex justify-between items-center p-3 bg-white">
                           <span className="text-zinc-500 font-medium">Verified Date of Birth</span>
-                          <span className="font-bold text-emerald-600 flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> 01/01/1991 (SSA Verified)</span>
+                          <span className="font-bold text-emerald-600">01/01/1991 (SSA Verified)</span>
                         </div>
                         <div className="flex justify-between items-center p-3">
                           <span className="text-zinc-500 font-medium">Calculated Age</span>
@@ -461,7 +419,7 @@ export default function EligibilityReport() {
                         </div>
                         <div className="flex justify-between items-center p-3 bg-white">
                           <span className="text-zinc-500 font-medium">Verified Citizenship</span>
-                          <span className="font-bold text-emerald-600 flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> U.S. Citizen (SSA/DHS Match)</span>
+                          <span className="font-bold text-emerald-600">U.S. Citizen (SSA/DHS Match)</span>
                         </div>
                         <div className="flex justify-between items-center p-3">
                           <span className="text-zinc-500 font-medium">Verification Status</span>
@@ -478,7 +436,7 @@ export default function EligibilityReport() {
                         </div>
                         <div className="flex justify-between items-center p-3 bg-white">
                           <span className="text-zinc-500 font-medium">Verified Household Size</span>
-                          <span className="font-bold text-emerald-600 flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> 1 Adult, 0 Children (DMV Match)</span>
+                          <span className="font-bold text-emerald-600">1 Adult, 0 Children (DMV Match)</span>
                         </div>
                         <div className="flex justify-between items-center p-3">
                           <span className="text-zinc-500 font-medium">Relationship Details</span>
@@ -495,7 +453,7 @@ export default function EligibilityReport() {
                         </div>
                         <div className="flex justify-between items-center p-3 bg-white">
                           <span className="text-zinc-500 font-medium">Verified SSN Match</span>
-                          <span className="font-bold text-emerald-600 flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Verified (TransUnion match)</span>
+                          <span className="font-bold text-emerald-600">Verified (TransUnion match)</span>
                         </div>
                         <div className="flex justify-between items-center p-3">
                           <span className="text-zinc-500 font-medium">Biometric / Photo Match</span>
@@ -507,15 +465,15 @@ export default function EligibilityReport() {
                     {activeTab === 'income' && (
                       <>
                         <div className="flex justify-between items-center p-3">
-                          <span className="text-zinc-500 font-medium">Reported Monthly Income</span>
-                          <span className="font-bold text-zinc-700">$1,200.00</span>
+                          <span className="text-zinc-500 font-semibold">Reported Monthly Income</span>
+                          <span className="font-bold text-zinc-800">$1,200.00</span>
                         </div>
                         <div className="flex justify-between items-center p-3 bg-white">
-                          <span className="text-zinc-500 font-medium">Verified Monthly Income</span>
-                          <span className="font-bold text-emerald-600 flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> $1,200.00 (Equifax WorkNumber Match)</span>
+                          <span className="text-zinc-500 font-semibold">Verified Monthly Income</span>
+                          <span className="font-bold text-emerald-600">$1,200.00 (Equifax WorkNumber Match)</span>
                         </div>
                         <div className="flex justify-between items-center p-3">
-                          <span className="text-zinc-500 font-medium">Income Program Limit</span>
+                          <span className="text-zinc-500 font-semibold">Income Program Limit</span>
                           <span className="font-semibold text-zinc-700">$1,428.00 (Eligible)</span>
                         </div>
                       </>
