@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+@layer base {
+  body {
+    @apply bg-zinc-50 font-sans text-zinc-900;
+  }
+}
