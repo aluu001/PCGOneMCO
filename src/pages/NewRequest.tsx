@@ -86,12 +86,27 @@ const categoryLabels: Record<string, string> = {
   resources: 'Resources',
 };
 
+const categoryDescriptions: Record<string, string> = {
+  age: 'Verifies candidate date of birth, age thresholds, and vital statistics matches.',
+  citizenship: 'Verifies lawful presence and citizenship status against federal SSA and DHS databases.',
+  criminal: 'Queries incarceration records, booking dates, and release status from state and national databases.',
+  death: 'Checks vital statistics death records to ensure the applicant is not flagged on active death master files.',
+  household: 'Evaluates co-occupants, DMV address correlations, and relationship declarations.',
+  identity: 'Matches SSN, first name, and last name indexes to establish authentic identity credentials.',
+  residency: 'Checks state tax filings, DMV records, property ownership, and utility indicators to confirm in-state residency.',
+  income: 'Queries Equifax WorkNumber, child support disbursements, lottery payouts, and state quarterly wage records.',
+  property: 'Checks property registry databases, land titles, and vehicle ownership indexes.',
+  resources: 'Verifies liquid assets, banking transactions, and financial holdings above program thresholds.',
+};
+
 export default function NewRequest() {
   const navigate = useNavigate();
   
   // Navigation & Collapse State
   const [activeTab, setActiveTab] = useState('case'); // 'case' | 'applicant' | 'databases'
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  
+
 
   // Case Details State
   const [caseNumber, setCaseNumber] = useState('');
@@ -207,10 +222,10 @@ export default function NewRequest() {
       {/* Top Header Row */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
         <div>
-          <span className="text-[9px] font-black uppercase tracking-widest text-indigo-650">Submission Portal</span>
+          <span className="text-[9px] font-black uppercase tracking-widest text-indigo-605">Submission Portal</span>
           <h2 className="text-2xl font-black text-indigo-700 tracking-tight uppercase">New Instant Eligibility Request</h2>
         </div>
-        <Link to="/" className="text-xs font-extrabold text-zinc-500 hover:text-zinc-800 transition-colors uppercase tracking-widest bg-white border border-zinc-300 px-4.5 py-2.5 rounded-xl shadow-sm">
+        <Link to="/" className="text-xs font-extrabold text-zinc-555 hover:text-indigo-650 transition-all bg-white border border-zinc-300 px-4.5 py-2.5 rounded-xl shadow-sm">
           Cancel Request
         </Link>
       </div>
@@ -304,16 +319,16 @@ export default function NewRequest() {
           </div>
         )}
 
-        {/* RIGHT COLUMN: Active Form details canvas (Auto expands to 100% when sidebar is collapsed) */}
+        {/* RIGHT COLUMN: Active Form details canvas */}
         <div className="flex-1 bg-white rounded-3xl border border-zinc-300 shadow-sm p-6 md:p-8 flex flex-col justify-between min-h-[500px]">
           
           <div className="flex flex-col gap-6">
-            {/* Collapse Toggle Trigger (Only visible when sidebar is collapsed) */}
+            {/* Collapse Toggle Trigger */}
             {sidebarCollapsed && (
               <button
                 type="button"
                 onClick={() => setSidebarCollapsed(false)}
-                className="bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200 text-indigo-700 font-extrabold px-4 py-2 rounded-xl text-[10px] uppercase tracking-widest w-fit mb-2 transition-all animate-in fade-in duration-200"
+                className="bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200 text-indigo-700 font-extrabold px-4 py-2 rounded-xl text-[10px] uppercase tracking-widest w-fit mb-2 transition-all"
               >
                 &rarr; Show Navigation Menu
               </button>
@@ -389,7 +404,7 @@ export default function NewRequest() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
                     <div className="flex flex-col gap-1">
                       <label htmlFor="size-and" className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">AND</label>
-                      <input type="text" id="size-and" value={programSizes.and} onChange={(e) => handleProgramSizeChange('and', e.target.value)} className="border border-zinc-300 rounded-lg px-3 py-1.5 text-xs font-bold text-zinc-950 bg-white" />
+                      <input type="text" id="size-and" value={programSizes.and} onChange={(e) => handleProgramSizeChange('and', e.target.value)} className="border border-zinc-300 rounded-lg px-3 py-1.5 text-xs font-bold text-zinc-955 bg-white" />
                     </div>
                     <div className="flex flex-col gap-1">
                       <label htmlFor="size-magi" className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">MAGI</label>
@@ -404,19 +419,19 @@ export default function NewRequest() {
                       <input type="text" id="size-other" value={programSizes.other} onChange={(e) => handleProgramSizeChange('other', e.target.value)} className="border border-zinc-300 rounded-lg px-3 py-1.5 text-xs font-bold text-zinc-955 bg-white" />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label htmlFor="size-ltc" className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">LTC</label>
+                      <label htmlFor="size-ltc" className="text-[9px] font-bold uppercase tracking-wider text-zinc-450">LTC</label>
                       <input type="text" id="size-ltc" value={programSizes.ltc} onChange={(e) => handleProgramSizeChange('ltc', e.target.value)} className="border border-zinc-300 rounded-lg px-3 py-1.5 text-xs font-bold text-zinc-955 bg-white" />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label htmlFor="size-mbiwd" className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">MBIWD</label>
+                      <label htmlFor="size-mbiwd" className="text-[9px] font-bold uppercase tracking-wider text-zinc-450">MBIWD</label>
                       <input type="text" id="size-mbiwd" value={programSizes.mbiwd} onChange={(e) => handleProgramSizeChange('mbiwd', e.target.value)} className="border border-zinc-300 rounded-lg px-3 py-1.5 text-xs font-bold text-zinc-955 bg-white" />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label htmlFor="size-ssi" className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">SSI</label>
+                      <label htmlFor="size-ssi" className="text-[9px] font-bold uppercase tracking-wider text-zinc-450">SSI</label>
                       <input type="text" id="size-ssi" value={programSizes.ssi} onChange={(e) => handleProgramSizeChange('ssi', e.target.value)} className="border border-zinc-300 rounded-lg px-3 py-1.5 text-xs font-bold text-zinc-955 bg-white" />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label htmlFor="size-noactive" className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">No Active</label>
+                      <label htmlFor="size-noactive" className="text-[9px] font-bold uppercase tracking-wider text-zinc-450">No Active</label>
                       <input type="text" id="size-noactive" value={programSizes.noActive} onChange={(e) => handleProgramSizeChange('noActive', e.target.value)} className="border border-zinc-300 rounded-lg px-3 py-1.5 text-xs font-bold text-zinc-955 bg-white" />
                     </div>
                   </div>
@@ -433,7 +448,7 @@ export default function NewRequest() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     <div className="flex flex-col gap-1">
                       <label htmlFor="ind-id" className="text-[9px] font-black uppercase tracking-wider text-zinc-450 ml-1">Individual ID *</label>
-                      <input type="text" id="ind-id" placeholder="e.g. 1000000001" value={individual.id} onChange={(e) => handleIndividualChange('id', e.target.value)} className="border border-zinc-350 rounded-xl px-3.5 py-3 text-xs font-bold text-zinc-950 bg-zinc-50 focus:bg-white shadow-inner focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-550 transition-all" />
+                      <input type="text" id="ind-id" placeholder="e.g. 1000000001" value={individual.id} onChange={(e) => handleIndividualChange('id', e.target.value)} className="border border-zinc-350 rounded-xl px-3.5 py-3 text-xs font-bold text-zinc-955 bg-zinc-50 focus:bg-white shadow-inner focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-550 transition-all" />
                     </div>
                     <div className="flex flex-col gap-1">
                       <label htmlFor="ind-ssn" className="text-[9px] font-black uppercase tracking-wider text-zinc-450 ml-1">SSN</label>
@@ -459,11 +474,11 @@ export default function NewRequest() {
                   <span className="text-[9px] font-black uppercase tracking-wider text-indigo-650 block border-b border-zinc-100 pb-0.5">Name Details</span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     <div className="flex flex-col gap-1">
-                      <label htmlFor="ind-first" className="text-[9px] font-black uppercase tracking-wider text-zinc-450 ml-1">First Name *</label>
+                      <label htmlFor="ind-first" className="text-[9px] font-black uppercase tracking-wider text-zinc-455 ml-1">First Name *</label>
                       <input type="text" id="ind-first" value={individual.firstName} onChange={(e) => handleIndividualChange('firstName', e.target.value)} className="border border-zinc-350 rounded-xl px-3.5 py-3 text-xs font-bold text-zinc-955 bg-zinc-50 focus:bg-white shadow-inner focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-550 transition-all" />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <label htmlFor="ind-last" className="text-[9px] font-black uppercase tracking-wider text-zinc-450 ml-1">Last Name *</label>
+                      <label htmlFor="ind-last" className="text-[9px] font-black uppercase tracking-wider text-zinc-455 ml-1">Last Name *</label>
                       <input type="text" id="ind-last" value={individual.lastName} onChange={(e) => handleIndividualChange('lastName', e.target.value)} className="border border-zinc-350 rounded-xl px-3.5 py-3 text-xs font-bold text-zinc-955 bg-zinc-50 focus:bg-white shadow-inner focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-550 transition-all" />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -552,57 +567,75 @@ export default function NewRequest() {
               </div>
             )}
 
-            {/* TAB CONTENT 3: Database Selection */}
+            {/* TAB CONTENT 3: Database Selection (Split-Form Section Rows) */}
             {activeTab === 'databases' && (
               <div className="flex flex-col gap-6 animate-in fade-in duration-200">
-                <div className="border-b border-zinc-200 pb-2.5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <p className="text-xs text-zinc-500">Configure target databases. No accordions: all options are always visible.</p>
-                  
-                  <div className="flex flex-wrap gap-2 pt-1.5">
-                    <button type="button" onClick={() => setAllCheckboxes(true)} className="border border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-700 font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider">Select All</button>
-                    <button type="button" onClick={() => setAllCheckboxes(false)} className="border border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-700 font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider">Unselect All</button>
-                    <span className="w-px h-5 bg-zinc-200 self-center"></span>
-                    <button type="button" onClick={() => setSources(initialCheckboxState)} className="border border-indigo-200 hover:border-indigo-350 bg-indigo-50/50 text-indigo-700 font-bold px-3.5 py-1.5 rounded-lg text-[10px] uppercase tracking-wider">Reset Defaults</button>
+                
+                {/* Global database control header */}
+                <div className="flex flex-wrap items-center justify-between gap-4 bg-zinc-50 border border-zinc-250 p-4.5 rounded-2xl shadow-inner mb-2">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-black text-indigo-700 uppercase tracking-wider">Query Configuration</span>
+                    <span className="text-xs text-zinc-500 font-semibold mt-0.5">{countActiveDatabases()} Databases selected in total</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => setAllCheckboxes(true)} className="border border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-705 font-bold px-3.5 py-2 rounded-xl text-[10px] uppercase tracking-wider transition-colors cursor-pointer">Select All Sources</button>
+                    <button type="button" onClick={() => setAllCheckboxes(false)} className="border border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-705 font-bold px-3.5 py-2 rounded-xl text-[10px] uppercase tracking-wider transition-colors cursor-pointer">Unselect All</button>
+                    <button type="button" onClick={() => setSources(initialCheckboxState)} className="border border-indigo-200 hover:border-indigo-350 bg-indigo-50/50 text-indigo-705 font-bold px-3.5 py-2 rounded-xl text-[10px] uppercase tracking-wider transition-colors cursor-pointer">Reset Defaults</button>
                   </div>
                 </div>
 
-                {/* Database Selection Grid (Full Width, always visible) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Vertical Split-Form Category Sections */}
+                <div className="flex flex-col divide-y divide-zinc-200">
                   {Object.entries(categoryLabels).map(([catKey, label]) => {
-                    const catSources = sources[catKey] || {};
-                    
+                    const catSources = Object.entries(sources[catKey] || {});
+                    const selectedCount = catSources.filter(([_, checked]) => checked).length;
+                    const totalCount = catSources.length;
+
                     return (
-                      <div key={catKey} className="bg-zinc-50 border border-zinc-300 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between">
+                      <div key={catKey} className="py-6 first:pt-2 last:pb-2 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                         
-                        {/* Sub-header */}
-                        <div className="bg-zinc-100 px-4.5 py-2.5 border-b border-zinc-300 flex justify-between items-center">
-                          <span className="text-xs font-black text-zinc-800 uppercase tracking-wider">{label}</span>
-                          <div className="flex items-center gap-2">
+                        {/* Left Info Area */}
+                        <div className="flex flex-col gap-2 lg:col-span-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h4 className="text-xs font-black text-zinc-900 uppercase tracking-wider">{label}</h4>
+                            <span className={`text-[9px] px-2 py-0.5 rounded font-black tracking-widest ${
+                              selectedCount > 0 
+                                ? 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm' 
+                                : 'bg-zinc-100 text-zinc-500 border border-zinc-200'
+                            }`}>
+                              {selectedCount}/{totalCount} Selected
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-zinc-505 leading-relaxed pr-4">{categoryDescriptions[catKey]}</p>
+                          
+                          {/* Category Local Actions */}
+                          <div className="flex gap-3 text-[10px] font-black uppercase tracking-wider text-zinc-400 mt-1">
                             <button 
                               type="button" 
                               onClick={() => setCategoryAll(catKey, true)}
-                              className="text-[9px] font-black text-indigo-700 bg-white border border-indigo-250 hover:bg-indigo-50 px-2 py-0.5 rounded"
+                              className="hover:text-indigo-600 transition-colors cursor-pointer"
                             >
-                              All
+                              Select All
                             </button>
+                            <span>&bull;</span>
                             <button 
                               type="button" 
                               onClick={() => setCategoryAll(catKey, false)}
-                              className="text-[9px] font-black text-zinc-700 bg-white border border-zinc-300 hover:bg-zinc-100 px-2 py-0.5 rounded"
+                              className="hover:text-indigo-600 transition-colors cursor-pointer"
                             >
-                              None
+                              Clear
                             </button>
                           </div>
                         </div>
 
-                        {/* Checklist Category Body */}
-                        <div className="p-4 flex flex-col gap-2 bg-white flex-1 justify-center">
-                          {Object.entries(catSources).map(([sourceName, checked]) => (
+                        {/* Right Checkbox Grid */}
+                        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {catSources.map(([sourceName, checked]) => (
                             <label 
                               key={sourceName} 
-                              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all cursor-pointer select-none ${
+                              className={`flex items-center gap-3.5 px-4.5 py-3.5 rounded-2xl border transition-all cursor-pointer select-none ${
                                 checked 
-                                  ? 'bg-indigo-50/30 border-indigo-250 text-indigo-905 shadow-sm font-bold' 
+                                  ? 'bg-indigo-50/15 border-indigo-250 text-indigo-905 shadow-xs font-extrabold' 
                                   : 'bg-white border-zinc-250 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300 font-semibold'
                               }`}
                             >
@@ -621,6 +654,7 @@ export default function NewRequest() {
                     );
                   })}
                 </div>
+
               </div>
             )}
           </div>
