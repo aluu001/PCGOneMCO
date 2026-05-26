@@ -1,4 +1,3 @@
-import React from 'react';
 import TaskFilters from '../components/TaskFilters';
 import TaskTable from '../components/TaskTable';
 

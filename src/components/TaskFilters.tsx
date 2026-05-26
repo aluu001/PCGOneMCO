@@ -1,4 +1,3 @@
-import React from 'react';
 import { Filter, UserCircle } from 'lucide-react';
 
 export default function TaskFilters() {
