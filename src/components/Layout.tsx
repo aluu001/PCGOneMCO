@@ -1,7 +1,6 @@
-import React from 'react';
-import { Search, FolderPlus, FileText, Settings, User, ChevronDown, Activity } from 'lucide-react';
+import type { ReactNode } from 'react';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col font-sans pb-24">
       {/* Header */}
@@ -10,34 +9,33 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-6">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 text-indigo-700">
-                <Activity className="w-8 h-8" />
-                <span className="text-3xl font-bold tracking-tight">IEVS</span>
+                <span className="text-3xl font-black tracking-tight">IEVS</span>
               </div>
-              <span className="text-[11px] text-zinc-600 font-semibold mt-1 uppercase tracking-wider">Ohio TEST - logged in as Manager Confidential</span>
+              <span className="text-[10px] text-zinc-500 font-bold mt-0.5 uppercase tracking-wider">Ohio TEST - logged in as Manager Confidential</span>
             </div>
           </div>
           
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-zinc-600">
-            <button className="flex items-center gap-1.5 hover:text-indigo-700 transition-colors">
-              <Search className="w-4 h-4" /> IEVS Results
-            </button>
-            <button className="flex items-center gap-1.5 hover:text-indigo-700 transition-colors">
-              <FolderPlus className="w-4 h-4" /> New Request
-            </button>
-            <button className="flex items-center gap-1 hover:text-indigo-700 transition-colors">
-              Task Management <ChevronDown className="w-3 h-3" />
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-bold uppercase tracking-wider text-zinc-600">
+            <button className="hover:text-indigo-700 transition-colors">
+              IEVS Results
             </button>
             <button className="hover:text-indigo-700 transition-colors">
+              New Request
+            </button>
+            <button className="hover:text-indigo-700 transition-colors">
+              Task Management
+            </button>
+            <button className="hover:text-indigo-700 transition-colors font-medium text-zinc-500">
               Identity Investigation
             </button>
-            <button className="flex items-center gap-1.5 hover:text-indigo-700 transition-colors">
-              <FileText className="w-4 h-4" /> Reports <ChevronDown className="w-3 h-3" />
+            <button className="hover:text-indigo-700 transition-colors">
+              Reports
             </button>
-            <button className="flex items-center gap-1.5 hover:text-indigo-700 transition-colors">
-              <Settings className="w-4 h-4" /> Administration <ChevronDown className="w-3 h-3" />
+            <button className="hover:text-indigo-700 transition-colors">
+              Administration
             </button>
-            <button className="flex items-center gap-1.5 hover:text-indigo-700 transition-colors md:ml-4 md:pl-4 md:border-l border-zinc-200">
-              <User className="w-4 h-4" /> Pcg Dev <ChevronDown className="w-3 h-3" />
+            <button className="hover:text-indigo-700 transition-colors md:ml-4 md:pl-4 md:border-l border-zinc-200 text-indigo-600">
+              Pcg Dev
             </button>
           </div>
         </div>
