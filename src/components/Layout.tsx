@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -16,12 +17,12 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
           
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-bold uppercase tracking-wider text-zinc-600">
-            <button className="hover:text-indigo-700 transition-colors">
+            <Link to="/" className="hover:text-indigo-700 transition-colors">
               IEVS Results
-            </button>
-            <button className="hover:text-indigo-700 transition-colors">
+            </Link>
+            <Link to="/new-request" className="hover:text-indigo-700 transition-colors">
               New Request
-            </button>
+            </Link>
             <button className="hover:text-indigo-700 transition-colors">
               Task Management
             </button>
