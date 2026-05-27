@@ -30,6 +30,7 @@ export default function EligibilityReport() {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('criminal');
   const [caseStatus, setCaseStatus] = useState('Open');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const activeCategory = categories.find(c => c.id === activeTab);
 
@@ -124,51 +125,75 @@ export default function EligibilityReport() {
       </div>
 
       {/* Main Two-Column Left-Nav / Detail Layout */}
-      <div className="flex flex-col md:flex-row items-stretch gap-8 w-full">
+      <div className="flex flex-col md:flex-row items-start gap-8 w-full relative">
         
         {/* Left Sidebar Navigation */}
-        <div className="w-full md:w-80 shrink-0 flex flex-col gap-5 bg-white p-6 rounded-3xl border border-zinc-300 shadow-sm h-fit">
-          <div className="px-2 border-b border-zinc-200 pb-3">
-            <h3 className="text-[10px] font-black uppercase tracking-widest text-zinc-450">Verification Categories</h3>
-            <p className="text-[11px] text-zinc-505 mt-1">Select a category below to verify findings</p>
-          </div>
-          
-          <div className="flex flex-col gap-2">
-            {categories.map((cat) => {
-              const isActive = activeTab === cat.id;
-              const isEligible = cat.status === 'Eligible';
+        {!sidebarCollapsed && (
+          <div className="w-full md:w-80 shrink-0 flex flex-col justify-between bg-white p-6 rounded-3xl border border-zinc-300 shadow-sm sticky top-24 z-10 gap-6 animate-in slide-in-from-left-4 duration-200">
+            <div className="flex flex-col gap-5">
+              <div className="px-2 border-b border-zinc-200 pb-3">
+                <h3 className="text-[10px] font-black uppercase tracking-widest text-zinc-450">Verification Categories</h3>
+                <p className="text-[11px] text-zinc-505 mt-1">Select a category below to verify findings</p>
+              </div>
               
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveTab(cat.id)}
-                  className={`flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-200 border text-left group w-full ${
-                    isActive 
-                      ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 border-indigo-700 text-white shadow-[0_6px_20px_rgba(79,70,229,0.25)] font-bold -translate-y-0.5' 
-                      : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-350 font-semibold'
-                  }`}
-                >
-                  <span className="text-xs tracking-wide">
-                    {cat.label}
-                  </span>
+              <div className="flex flex-col gap-2">
+                {categories.map((cat) => {
+                  const isActive = activeTab === cat.id;
+                  const isEligible = cat.status === 'Eligible';
                   
-                  <span className={`text-[9px] px-2.5 py-1 rounded-lg font-black uppercase tracking-widest shrink-0 transition-colors ${
-                    isActive
-                      ? 'bg-white/20 text-white border border-white/10'
-                      : (isEligible ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : 'bg-rose-50 text-rose-800 border border-rose-300')
-                  }`}>
-                    {isEligible ? 'Eligible' : 'Ineligible'}
-                  </span>
-                </button>
-              )
-            })}
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setActiveTab(cat.id)}
+                      className={`flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-200 border text-left group w-full ${
+                        isActive 
+                          ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 border-indigo-700 text-white shadow-[0_6px_20px_rgba(79,70,229,0.25)] font-bold -translate-y-0.5' 
+                          : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-350 font-semibold'
+                      }`}
+                    >
+                      <span className="text-xs tracking-wide">
+                        {cat.label}
+                      </span>
+                      
+                      <span className={`text-[9px] px-2.5 py-1 rounded-lg font-black uppercase tracking-widest shrink-0 transition-colors ${
+                        isActive
+                          ? 'bg-white/20 text-white border border-white/10'
+                          : (isEligible ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : 'bg-rose-50 text-rose-800 border border-rose-300')
+                      }`}>
+                        {isEligible ? 'Eligible' : 'Ineligible'}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Sidebar Collapse Action */}
+            <button
+              type="button"
+              onClick={() => setSidebarCollapsed(true)}
+              className="bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-505 font-extrabold px-4 py-2.5 rounded-2xl text-[10px] uppercase tracking-widest text-center transition-all cursor-pointer"
+            >
+              &larr; Hide Categories
+            </button>
           </div>
-        </div>
+        )}
 
         {/* Right Detail Pane */}
         <div className="flex-1 bg-white rounded-3xl border border-zinc-300 shadow-sm p-8 min-h-[550px] flex flex-col justify-between">
           
           <div className="flex flex-col gap-6">
+            {/* Collapse Toggle Trigger */}
+            {sidebarCollapsed && (
+              <button
+                type="button"
+                onClick={() => setSidebarCollapsed(false)}
+                className="bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200 text-indigo-705 font-extrabold px-4 py-2 rounded-xl text-[10px] uppercase tracking-widest w-fit mb-2 transition-all cursor-pointer"
+              >
+                &rarr; Show Categories Menu
+              </button>
+            )}
+
             {/* Detail Pane Header */}
             <div className="flex items-center justify-between border-b border-zinc-200 pb-5">
               <div className="flex flex-col">
